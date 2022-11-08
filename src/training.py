@@ -8,7 +8,7 @@ def normalizeImage(path):
     img_rgb = cv2.imread(path)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
-    resized = cv2.resize(img_gray, (128, 128), interpolation = cv2.INTER_AREA)
+    resized = cv2.resize(img_gray, (256, 256), interpolation = cv2.INTER_AREA)
     # Cek hasil image yang diresize
     # cv2.imshow("test image", resized)
     # cv2.waitKey(0)
@@ -31,7 +31,7 @@ def extractMatrices(directory):
         if os.path.isfile(f):
             len += 1
 
-    result = np.empty((len, 128, 128))
+    result = np.empty((len, 256, 256))
 
     idx = 0
     for filename in os.listdir(directory):
