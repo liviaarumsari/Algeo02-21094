@@ -55,7 +55,7 @@ def differenceOfMatrix(trainingMatrix, mean):
     return np.subtract(trainingMatrix, mean)
 
 def differenceList(trainingMatrices, mean):
-    result = np.empty((len(trainingMatrices), len(trainingMatrices[0]), len(trainingMatrices[0])))
+    result = np.empty((len(trainingMatrices), len(trainingMatrices[0]), 1))
     for i in range (len(result)):
         result[i] = differenceOfMatrix(trainingMatrices[i], mean)
     return result
@@ -74,12 +74,12 @@ print("Rata-rata Training Matrix")
 mean = meanOfMatrices(ret)
 print(mean.shape)
 print(unflattenMatrix(mean).shape)
-cv2.imshow("average_face", unflattenMatrix(mean))
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow("average_face", unflattenMatrix(mean))
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 # print(mean)
-# print("Selisih Tiap Training Matrix dengan Rata-rata")
-# print(differenceList(ret, mean))
+print("Selisih Tiap Training Matrix dengan Rata-rata")
+print(differenceList(ret, mean).shape)
 
 
 
