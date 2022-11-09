@@ -21,7 +21,7 @@ def normalizeImage(path):
     for img in range(num_img):
         norm[img, ...] = (resized[img, ...] - float(minPx)) / float(maxPx - minPx)
     
-    return norm
+    return np.reshape(norm,(256*256,1))
 
 def extractMatrices(directory):
 
@@ -31,7 +31,8 @@ def extractMatrices(directory):
         if os.path.isfile(f):
             len += 1
 
-    result = np.empty((len, 256, 256))
+    # result = np.empty((len, 256, 256))
+    result = np.empty((len, 256*256, 1))
 
     idx = 0
     for filename in os.listdir(directory):
@@ -59,17 +60,26 @@ def differenceList(trainingMatrices, mean):
         result[i] = differenceOfMatrix(trainingMatrices[i], mean)
     return result
 
+def unflattenMatrix(matrix):
+    return np.reshape(matrix,(256,256))
+
 # TES FUNGSI
 ret = extractMatrices('test')
-print("Hasil Training Matrix dari Seluruh Gambar")
-print(ret)
+print(ret.shape)
+# print("Hasil Training Matrix dari Seluruh Gambar")
+# print(ret)
 # print(ret[0])
 # print(ret[0, 1])
 print("Rata-rata Training Matrix")
 mean = meanOfMatrices(ret)
-print(mean)
-print("Selisih Tiap Training Matrix dengan Rata-rata")
-print(differenceList(ret, mean))
+print(mean.shape)
+print(unflattenMatrix(mean).shape)
+cv2.imshow("average_face", unflattenMatrix(mean))
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+# print(mean)
+# print("Selisih Tiap Training Matrix dengan Rata-rata")
+# print(differenceList(ret, mean))
 
 
 
