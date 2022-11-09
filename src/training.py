@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import os
-
+from qrMethod import *
 
 def normalizeImage(path):
     img_rgb = cv2.imread(path)
@@ -100,7 +100,28 @@ concat = concatMatrix(temp)
 print(concat.shape)
 covariant = matrixCovariant(concat)
 print(covariant.shape)
-print(covariant)
+# print(covariant)
+covariant = np.array(covariant)
+w ,v = np.linalg.eig(covariant)
+
+print("============ Eigen value bawaan ========")
+print(w)
+print(v)
+
+for i in range(100):
+    q,r = qrMethods(covariant)
+    covariant = np.dot(r,q)
+# print("========= Ini matriks q =========")
+# print(q)
+# print("====== Ini matriks r ===========")
+# print(r)
+
+
+r.diagonal()
+print("==========Eigen value ===============")
+print(r.diagonal())
+
+
 
 
 
