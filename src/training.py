@@ -63,6 +63,20 @@ def differenceList(trainingMatrices, mean):
 def unflattenMatrix(matrix):
     return np.reshape(matrix,(256,256))
 
+def concatMatrix(result):
+    matrixConcat = np.empty((128,128*len(result)))
+    for i in range(len(result)):
+        if (i == 0):
+            matrixConcat = result[0]
+        else:
+            matrixConcat = np.concatenate((matrixConcat, result[i]), axis=1)
+    return matrixConcat
+
+def matrixCovariant(matrixConcat):
+    transposeConcat = matrixConcat.transpose()
+    matrixCovariant = np.dot(transposeConcat,matrixConcat)
+    return(matrixCovariant)
+
 # TES FUNGSI
 ret = extractMatrices('test')
 print(ret.shape)
@@ -79,8 +93,14 @@ print(unflattenMatrix(mean).shape)
 # cv2.destroyAllWindows()
 # print(mean)
 print("Selisih Tiap Training Matrix dengan Rata-rata")
-print(differenceList(ret, mean).shape)
+temp = differenceList(ret,mean)
+print(temp.shape)
 
+concat = concatMatrix(temp)
+print(concat.shape)
+covariant = matrixCovariant(concat)
+print(covariant.shape)
+print(covariant)
 
 
 
