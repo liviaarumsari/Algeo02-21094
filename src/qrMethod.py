@@ -1,4 +1,7 @@
 import numpy as np 
+from sympy import *
+from numpy.linalg import svd
+
 
 temp = [[2,3,4,5,6],[4,4,5,6,7],[0,3,6,7,8],[0,0,2,8,9],[0,0,0,1,10]]
 def checkTriangle(matrix) : 
@@ -77,25 +80,53 @@ def getQr(matrix):
             matrixTemp = np.delete(matrixTemp,0,1)
     return Q,R
 
-
-# v,w = np.linalg.qr(temp)
-# print("Q bawaan : ")
-# print(v)
-# print("R bawaan : ")
-# print(w)
-
-# q,r =getQr(temp)
-# print("Q buat sendiri : ")
-# print(q)
-# print("R sendiri : ")
-# print(r)
-# print(np.dot(q,r))
+def searchEigenVector(eigenValues,matrix):
+    n = len(matrix)
+    identity = np.identity(n)
+    print(eigenValues)
+    for i in range (len(eigenValues)) : 
+        print(identity)
+        tempMatrix = eigenValues[i] * identity - matrix
+        print(tempMatrix)
+        tempMatrix = Matrix (tempMatrix)
+        basisVektor = tempMatrix.nullspace()
+        if not basisVektor:
+            basisVektor = np.zeros((len(matrix),1))
+        if(i == 0):
+            arr = basisVektor
+        else:
+            arr = np.append(arr,basisVektor,axis = 1)
+        print(arr)
 
 v,w  = np.linalg.eig(temp)
+print("==== Eigen Values bawaan linear =====")
 print(v)
+print("===== Eigen vector bawaan liner ====")
+print(w)
+# print("====== Eigen Vector bawaan python ======")
+# print(w)
 
-for i in range(20):
-    q,r = getQr(temp)
-    temp = np.dot(r,q)
+matrix = copyMatrix(temp)
 
-print(temp.diagonal())
+for i in range(500):
+    q,r = getQr(matrix)
+    matrix = np.dot(r,q)
+    if(i == 0 ):
+        basisVector = q
+    else:
+        basisVector = np.dot(basisVector,q)
+eigenValues = matrix.diagonal()
+print("=== Eigen Values Manual ====")
+print(basisVector)
+print(" ====== Eigen Vector Manual ======")
+print(eigenValues)
+# searchEigenVector(eigenValues,temp)
+# eigenValues = temp.diagonal()
+
+# print("==== Eigen vector pake coding ======")
+# print(simultaneous_orthogonalization(temp)))
+# temp = np.append(temp,a,axis = 1)
+# print(temp)
+# temp = Matrix(temp)
+# print(temp)
+# print(temp.nullspace())

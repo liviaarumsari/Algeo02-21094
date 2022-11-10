@@ -77,6 +77,19 @@ def matrixCovariant(matrixConcat):
     matrixCovariant = np.dot(transposeConcat,matrixConcat)
     return(matrixCovariant)
 
+def getEigenVector(matrixCovariant):
+    for i in range(256):
+        q,r = getQr(matrixCovariant)
+        if (i == 0):
+            eigenVector = q
+        else:
+            eigenVector = np.dot(eigenVector,q)
+        matrixCovariant = np.dot(r,q)
+    print("==========Eigen value ===============")
+    eigenValue = sorted(matrixCovariant.diagonal(),reverse = True)
+    print(eigenValue)
+    return eigenVector
+
 # TES FUNGSI
 ret = extractMatrices('test')
 print(ret.shape)
@@ -100,33 +113,9 @@ concat = concatMatrix(temp)
 print(concat.shape)
 covariant = matrixCovariant(concat)
 print(covariant.shape)
-# print(covariant)
-# covariant = np.array(covariant)
-w ,v = np.linalg.eig(covariant)
-
-w = sorted(w,reverse = True)
-print("============ Eigen value bawaan ========")
-print(w)
-# print(v)
-
-
-q,r = getQr(covariant)
-# print("Matriks Q bawaan ")
-# print(q)
-# print("Matriks R bawaan")
-# print(r)
-for i in range(256):
-    q,r = getQr(covariant)
-    covariant = np.dot(r,q)
-# print("========= Ini matriks q =========")
-# print(q)
-# print("====== Ini matriks r ===========")
-# print(r)
-
-# covariant.diagonal()
-print("==========Eigen value ===============")
-eigenValue = sorted(covariant.diagonal(),reverse = True)
-print(eigenValue)
+#Eigenvecotrs dari matrix
+eigenVectors = getEigenVector(covariant)
+print(eigenVectors)
 
 
 
