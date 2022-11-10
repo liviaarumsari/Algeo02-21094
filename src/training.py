@@ -101,25 +101,32 @@ print(concat.shape)
 covariant = matrixCovariant(concat)
 print(covariant.shape)
 # print(covariant)
-covariant = np.array(covariant)
+# covariant = np.array(covariant)
 w ,v = np.linalg.eig(covariant)
 
+w = sorted(w,reverse = True)
 print("============ Eigen value bawaan ========")
 print(w)
-print(v)
+# print(v)
 
-for i in range(100):
-    q,r = qrMethods(covariant)
+
+q,r = getQr(covariant)
+# print("Matriks Q bawaan ")
+# print(q)
+# print("Matriks R bawaan")
+# print(r)
+for i in range(256):
+    q,r = getQr(covariant)
     covariant = np.dot(r,q)
 # print("========= Ini matriks q =========")
 # print(q)
 # print("====== Ini matriks r ===========")
 # print(r)
 
-
-r.diagonal()
+# covariant.diagonal()
 print("==========Eigen value ===============")
-print(r.diagonal())
+eigenValue = sorted(covariant.diagonal(),reverse = True)
+print(eigenValue)
 
 
 
