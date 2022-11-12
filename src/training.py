@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import os
-
+from qrMethod import *
 
 def normalizeImage(path):
     img_rgb = cv2.imread(path)
@@ -63,6 +63,33 @@ def differenceList(trainingMatrices, mean):
 def unflattenMatrix(matrix):
     return np.reshape(matrix,(256,256))
 
+def concatMatrix(result):
+    matrixConcat = np.empty((128,128*len(result)))
+    for i in range(len(result)):
+        if (i == 0):
+            matrixConcat = result[0]
+        else:
+            matrixConcat = np.concatenate((matrixConcat, result[i]), axis=1)
+    return matrixConcat
+
+def matrixCovariant(matrixConcat):
+    transposeConcat = matrixConcat.transpose()
+    matrixCovariant = np.dot(transposeConcat,matrixConcat)
+    return(matrixCovariant)
+
+def getEigenVector(matrixCovariant):
+    for i in range(256):
+        q,r = getQr(matrixCovariant)
+        if (i == 0):
+            eigenVector = q
+        else:
+            eigenVector = np.dot(eigenVector,q)
+        matrixCovariant = np.dot(r,q)
+    print("==========Eigen value ===============")
+    eigenValue = sorted(matrixCovariant.diagonal(),reverse = True)
+    print(eigenValue)
+    return eigenVector
+
 # TES FUNGSI
 ret = extractMatrices('test')
 print(ret.shape)
@@ -79,7 +106,17 @@ print(unflattenMatrix(mean).shape)
 # cv2.destroyAllWindows()
 # print(mean)
 print("Selisih Tiap Training Matrix dengan Rata-rata")
-print(differenceList(ret, mean).shape)
+temp = differenceList(ret,mean)
+print(temp.shape)
+
+concat = concatMatrix(temp)
+print(concat.shape)
+covariant = matrixCovariant(concat)
+print(covariant.shape)
+#Eigenvecotrs dari matrix
+eigenVectors = getEigenVector(covariant)
+print(eigenVectors)
+
 
 
 
