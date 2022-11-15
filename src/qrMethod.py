@@ -2,7 +2,6 @@ import numpy as np
 from sympy import *
 from numpy.linalg import svd
 
-
 temp = [[2,3,4,5,6],[4,4,5,6,7],[0,3,6,7,8],[0,0,2,8,9],[0,0,0,1,10]]
 def checkTriangle(matrix) : 
     for i in range(1,len(matrix)):
@@ -103,8 +102,6 @@ print("==== Eigen Values bawaan linear =====")
 print(v)
 print("===== Eigen vector bawaan liner ====")
 print(w)
-# print("====== Eigen Vector bawaan python ======")
-# print(w)
 
 matrix = copyMatrix(temp)
 
@@ -120,13 +117,4 @@ print("=== Eigen Values Manual ====")
 print(basisVector)
 print(" ====== Eigen Vector Manual ======")
 print(eigenValues)
-# searchEigenVector(eigenValues,temp)
-# eigenValues = temp.diagonal()
 
-# print("==== Eigen vector pake coding ======")
-# print(simultaneous_orthogonalization(temp)))
-# temp = np.append(temp,a,axis = 1)
-# print(temp)
-# temp = Matrix(temp)
-# print(temp)
-# print(temp.nullspace())

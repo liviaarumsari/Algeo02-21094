@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import *
+from tkinter import filedialog as fd
 from tkinter.ttk import *
 from PIL import ImageTk, Image
 import os
@@ -21,7 +23,6 @@ def create_test_image_frame(container):
     labelImg = ttk.Label(frame, image=resizedImg)
     labelImg.grid(row=1)
     labelImg.image = resizedImg
-
     return frame
 
 def create_result_image_frame(container):
@@ -44,7 +45,11 @@ def create_result_image_frame(container):
 
     return frame
 
-# def chooseFolder():
+def chooseFolder():
+    root = Tk()
+    root.directory = fd.askdirectory()
+    root.withdraw()
+    return root.directory
 
 def create_choose_folder_button(container):
     dir_choose_folder_inactive = os.path.join(os.path.dirname(os.path.dirname(__file__)), os.path.join('assets', 'button_choose_folder_inactive.png'))
@@ -61,7 +66,8 @@ def create_choose_folder_button(container):
         button_choose_folder.image = choose_folder_inactive
 
     # Masukkin chooseFolder as command di button ini
-    button_choose_folder = ttk.Button(container, image=choose_folder_inactive)
+    
+    button_choose_folder = ttk.Button(container, image=choose_folder_inactive,command=chooseFolder)
     button_choose_folder.image = choose_folder_inactive
 
     button_choose_folder.bind("<Enter>", on_enter)
