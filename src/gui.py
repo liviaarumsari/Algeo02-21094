@@ -6,6 +6,7 @@ from tkinter.ttk import *
 from PIL import ImageTk, Image
 import os
 import training, recognition
+from webcam import *
 
 
 class programState:
@@ -74,6 +75,7 @@ class programState:
         else:
             print("please choose folder")
 
+isCameraOpened = False
 
 def create_test_image_frame(container, state: programState):
 
@@ -261,8 +263,10 @@ def create_choose_file_button(container, state):
     return button_choose_file
 
 
-# def openCamera():
-
+def openCamera():
+    openWebcam()
+    isCameraOpened = True
+    
 
 def create_open_camera_button(container):
     dir_open_camera_inactive = os.path.join(
@@ -285,7 +289,7 @@ def create_open_camera_button(container):
         button_open_camera.image = open_camera_inactive
 
     # Masukkin openCamera as command di button ini
-    button_open_camera = ttk.Button(container, image=open_camera_inactive)
+    button_open_camera = ttk.Button(container, image=open_camera_inactive,command=openWebcam)
     button_open_camera.image = open_camera_inactive
 
     button_open_camera.bind("<Enter>", on_enter)

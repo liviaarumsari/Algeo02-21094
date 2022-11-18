@@ -1,1 +1,2 @@
-command
+def openCamera():
+#     openWebcam()
