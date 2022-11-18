@@ -31,10 +31,7 @@ def extractMatrices(directory):
 
     len = 0
     for filename in os.listdir(directory):
-        f = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            os.path.join(directory, filename),
-        )
+        f = os.path.join(directory, filename)
         if os.path.isfile(f):
             len += 1
 
@@ -43,10 +40,7 @@ def extractMatrices(directory):
 
     idx = 0
     for filename in os.listdir(directory):
-        path = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            os.path.join(directory, filename),
-        )
+        path = os.path.join(directory, filename)
         # Test matrix hasil
         # temp = normalizeImage(path)
         # print(temp)
@@ -120,45 +114,55 @@ def calculateEigenfaces(
 
     return eigenfaces
 
+def trainFromFolder(path):
+    imageMatrices = extractMatrices(path)
+    mean = meanOfMatrices(imageMatrices)
+    normalizedMatrices = differenceList(imageMatrices, mean)
 
-# TES FUNGSI
-ret = extractMatrices("test")
-print(ret.shape)
-print("Hasil Training Matrix dari Seluruh Gambar")
-# print(ret)
-# print(ret[0])
-# print(ret[0, 1])
-print("Rata-rata Training Matrix")
-mean = meanOfMatrices(ret)
-print(mean.shape)
-print(unflattenMatrix(mean).shape)
-# cv2.imshow("average_face", unflattenMatrix(mean))
+    augmentedMatrixOfImages = concatMatrix(normalizedMatrices)
+    covariantL = matrixCovariant(augmentedMatrixOfImages)
+    eigenVectors = getEigenVector(covariantL)
+    
+    return (calculateEigenfaces(augmentedMatrixOfImages, eigenVectors), mean, imageMatrices)
+
+# # TES FUNGSI
+# ret = extractMatrices("test")
+# print(ret.shape)
+# print("Hasil Training Matrix dari Seluruh Gambar")
+# # print(ret)
+# # print(ret[0])
+# # print(ret[0, 1])
+# print("Rata-rata Training Matrix")
+# mean = meanOfMatrices(ret)
+# print(mean.shape)
+# print(unflattenMatrix(mean).shape)
+# # cv2.imshow("average_face", unflattenMatrix(mean))
+# # cv2.waitKey(0)
+# # cv2.destroyAllWindows()
+# # print(mean)
+# print("Selisih Tiap Training Matrix dengan Rata-rata")
+
+# temp = differenceList(ret, mean)
+# print(temp.shape)
+
+# concat = concatMatrix(temp)
+# print(concat.shape)
+# covariant = matrixCovariant(concat)
+# print(covariant.shape)
+# # Eigenvecotrs dari matrix
+# eigenVectors = getEigenVector(covariant)
+
+# eigenfaces = calculateEigenfaces(concat, eigenVectors)
+
+# # Test Recognition of Unknown image
+# unknownVect = normalizeImage(
+#     os.path.join(
+#         os.path.dirname(os.path.dirname(__file__)),
+#         os.path.join("unknown.jpg"),
+#     )
+# )
+# mostSimilarImage = recognition.mostSimilarImage(unknownVect, mean, ret, eigenfaces)
+# mostSimilarImage_matrix = np.reshape(mostSimilarImage, (256, 256))
+# cv2.imshow("test", mostSimilarImage_matrix)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
-# print(mean)
-print("Selisih Tiap Training Matrix dengan Rata-rata")
-
-temp = differenceList(ret, mean)
-print(temp.shape)
-
-concat = concatMatrix(temp)
-print(concat.shape)
-covariant = matrixCovariant(concat)
-print(covariant.shape)
-# Eigenvecotrs dari matrix
-eigenVectors = getEigenVector(covariant)
-
-eigenfaces = calculateEigenfaces(concat, eigenVectors)
-
-# Test Recognition of Unknown image
-unknownVect = normalizeImage(
-    os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        os.path.join("unknown.jpg"),
-    )
-)
-mostSimilarImage = recognition.mostSimilarImage(unknownVect, mean, ret, eigenfaces)
-mostSimilarImage_matrix = np.reshape(mostSimilarImage, (256, 256))
-cv2.imshow("test", mostSimilarImage_matrix)
-cv2.waitKey(0)
-cv2.destroyAllWindows()

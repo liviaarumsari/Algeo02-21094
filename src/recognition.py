@@ -1,4 +1,6 @@
 import numpy as np
+import os
+import cv2
 
 # Generate vector of coefficients (omega in GFG)
 # Reference: https://www.youtube.com/watch?v=61NuFlK5VdU
@@ -21,27 +23,26 @@ def calculateEuclideanDist(coefsNew: np.matrix, coefsTrain: np.matrix) -> float:
     return sum(pow(coef, 2) for coef in diff)
 
 
-# Return most similiar training image
-def mostSimilarImage(
+# Return path sorted by most similar
+def getSimilarImagesPathSorted(
     unkownImageVector: np.matrix,
     mean: np.matrix,
     trainingImages: np.ndarray,
+    trainingImagesPaths: list[str],
     eigenfaces: list[np.matrix],
-) -> np.ndarray:
+) -> list[np.matrix]:
     # Calculate coefficient matrix (Omega) of unknown image
     newImageCoef = vectorOfCoefficients(eigenfaces, unkownImageVector - mean)
 
-    minDist = None
-    idxMinDist = 0
+    distList = []
     for idx in range(len(eigenfaces)):
         # Calculate distance between unknown image and the-idx'th training image
+        trainingImageVector = np.reshape(trainingImages[idx, :, 0], (65536, 1))
         dist = calculateEuclideanDist(
-            newImageCoef, vectorOfCoefficients(eigenfaces, trainingImages[idx, :, 0])
+            newImageCoef, vectorOfCoefficients(eigenfaces, trainingImageVector - mean)
         )
+        distList.append((dist, trainingImagesPaths[idx]))
 
-        # Keep track of training image with least distance
-        if minDist == None or dist < minDist:
-            minDist = dist
-            idxMinDist = idx
+    distListSorted = sorted(distList, key=lambda x: x[0])
 
-    return trainingImages[idxMinDist, :, 0]
+    return [distTuple[1] for distTuple in distListSorted]
