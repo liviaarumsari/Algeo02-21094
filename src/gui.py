@@ -53,23 +53,23 @@ class programState:
                 self.eigenFaces,
             )
 
-            imgTest = ImageTk.PhotoImage(Image.open(self.newImageFilePath))
+            imgTest = ImageTk.PhotoImage(Image.open(self.newImageFilePath).resize((360, 360), Image.Resampling.LANCZOS))
             self.testImageLabel.configure(image=imgTest)
             self.testImageLabel.image = imgTest
 
-            img0 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[0]))
+            img0 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[0]).resize((360, 360), Image.Resampling.LANCZOS))
             self.resultImageLabel0.configure(image=img0)
             self.resultImageLabel0.image = img0
 
-            img1 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[1]))
+            img1 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[1]).resize((120, 120), Image.Resampling.LANCZOS))
             self.resultImageLabel1.configure(image=img1)
             self.resultImageLabel1.image = img1
 
-            img2 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[2]))
+            img2 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[2]).resize((120, 120), Image.Resampling.LANCZOS))
             self.resultImageLabel2.configure(image=img2)
             self.resultImageLabel2.image = img2
 
-            img3 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[3]))
+            img3 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[3]).resize((120, 120), Image.Resampling.LANCZOS))
             self.resultImageLabel3.configure(image=img3)
             self.resultImageLabel3.image = img3
         else:
@@ -356,14 +356,14 @@ def create_info_frame(container):
     resultName01.grid(column=0, row=7, columnspan=2, sticky="W")
     resultName02 = ttk.Label(frame, text="None")
     resultName02.grid(column=0, row=8, columnspan=2, sticky="W")
-    resultName03 = ttk.Label(frame, text="None")
-    resultName03.grid(column=0, row=9, columnspan=2, sticky="W")
-    resultName04 = ttk.Label(frame, text="None")
-    resultName04.grid(column=0, row=10, columnspan=2, sticky="W")
 
     # Execution Time
     executionTime = ttk.Label(frame, text="Execution time: 01:00")
-    executionTime.grid(column=0, row=11, columnspan=2, sticky="W", pady=(24, 0))
+    executionTime.grid(column=0, row=9, columnspan=2, sticky="W", pady=(24, 0))
+
+    # Error message
+    errorMsg = ttk.Label(frame, text="Error Message", style="Error.TLabel")
+    errorMsg.grid(column=0, row=10, columnspan=2, sticky="W", pady=(24, 0))
 
     return frame
 
@@ -435,6 +435,7 @@ def create_main_window(state: programState):
     s.configure(".", font=("Futura Bk BT", 18), foreground="#2F2D2D")
     s.configure("Heading1.TLabel", font=("Futura Md BT", 36), foreground="#6C56C2")
     s.configure("Subheading.TLabel", font=("Futura Md BT", 24), foreground="#6C56C2")
+    s.configure("Error.TLabel", font=("Futura Md BT", 20), foreground="#eb4034")
     s.configure("Subheading02.TLabel", font=("Futura Md BT", 20), foreground="#2F2D2D")
     s.configure("TButton", background="#FFFFFF", foreground="#FFFFFF", relief="flat")
     s.map("TButton", relief="flat", background=[("active", "#FFFFFF")])
