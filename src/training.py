@@ -114,6 +114,7 @@ def calculateEigenfaces(
 
     return eigenfaces
 
+
 def trainFromFolder(path):
     imageMatrices = extractMatrices(path)
     mean = meanOfMatrices(imageMatrices)
@@ -122,8 +123,15 @@ def trainFromFolder(path):
     augmentedMatrixOfImages = concatMatrix(normalizedMatrices)
     covariantL = matrixCovariant(augmentedMatrixOfImages)
     eigenVectors = getEigenVector(covariantL)
-    
-    return (calculateEigenfaces(augmentedMatrixOfImages, eigenVectors), mean, imageMatrices)
+
+    print("finished training")
+
+    return (
+        calculateEigenfaces(augmentedMatrixOfImages, eigenVectors),
+        mean,
+        imageMatrices,
+    )
+
 
 # # TES FUNGSI
 # ret = extractMatrices("test")

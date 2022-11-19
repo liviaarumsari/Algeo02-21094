@@ -7,6 +7,7 @@ from PIL import ImageTk, Image
 import os
 import training, recognition
 from webcam import *
+import threading
 
 
 class programState:
@@ -26,6 +27,10 @@ class programState:
         self.resultImageLabel2 = None
         self.resultImageLabel3 = None
 
+        self.execTime = 0
+        self.timerLabel = None
+        self.tkRoot = None
+
     def trainImages(self):
         if self.trainingFolderPath != "":
             (
@@ -42,6 +47,22 @@ class programState:
         else:
             print("please choose folder")
 
+    def runExecTimer(self):
+        ss = self.execTime % 60
+        mm = self.execTime // 60
+        self.timerLabel.configure(text=f"Execution time: {mm:02d}:{ss:02d}")
+        self.execTime += 1
+        if self.eigenFaces == None:
+            self.tkRoot.after(1000, self.runExecTimer)
+
+    def startTraining(self):
+        self.eigenFaces = None
+        self.execTime = 0
+        self.runExecTimer()
+
+        thread = threading.Thread(target=self.trainImages)
+        thread.start()
+
     def recognizeMostSimilar(self):
         if self.trainingFolderPath != "" or self.newImageFilePath != "":
             unkownImageVector = training.normalizeImage(self.newImageFilePath)
@@ -53,29 +74,51 @@ class programState:
                 self.eigenFaces,
             )
 
-            imgTest = ImageTk.PhotoImage(Image.open(self.newImageFilePath).resize((360, 360), Image.Resampling.LANCZOS))
+            imgTest = ImageTk.PhotoImage(
+                Image.open(self.newImageFilePath).resize(
+                    (360, 360), Image.Resampling.LANCZOS
+                )
+            )
             self.testImageLabel.configure(image=imgTest)
             self.testImageLabel.image = imgTest
 
-            img0 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[0]).resize((360, 360), Image.Resampling.LANCZOS))
+            img0 = ImageTk.PhotoImage(
+                Image.open(self.sortedTraningImagePaths[0]).resize(
+                    (360, 360), Image.Resampling.LANCZOS
+                )
+            )
             self.resultImageLabel0.configure(image=img0)
             self.resultImageLabel0.image = img0
 
-            img1 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[1]).resize((120, 120), Image.Resampling.LANCZOS))
+            img1 = ImageTk.PhotoImage(
+                Image.open(self.sortedTraningImagePaths[1]).resize(
+                    (120, 120), Image.Resampling.LANCZOS
+                )
+            )
             self.resultImageLabel1.configure(image=img1)
             self.resultImageLabel1.image = img1
 
-            img2 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[2]).resize((120, 120), Image.Resampling.LANCZOS))
+            img2 = ImageTk.PhotoImage(
+                Image.open(self.sortedTraningImagePaths[2]).resize(
+                    (120, 120), Image.Resampling.LANCZOS
+                )
+            )
             self.resultImageLabel2.configure(image=img2)
             self.resultImageLabel2.image = img2
 
-            img3 = ImageTk.PhotoImage(Image.open(self.sortedTraningImagePaths[3]).resize((120, 120), Image.Resampling.LANCZOS))
+            img3 = ImageTk.PhotoImage(
+                Image.open(self.sortedTraningImagePaths[3]).resize(
+                    (120, 120), Image.Resampling.LANCZOS
+                )
+            )
             self.resultImageLabel3.configure(image=img3)
             self.resultImageLabel3.image = img3
         else:
             print("please choose folder")
 
+
 isCameraOpened = False
+
 
 def create_test_image_frame(container, state: programState):
 
@@ -186,7 +229,7 @@ def chooseTrainingFolder(state: programState):
     root.directory = fd.askdirectory()
     root.withdraw()
     state.trainingFolderPath = root.directory
-    state.trainImages()
+    state.startTraining()
 
 
 def create_choose_folder_button(container, state):
@@ -263,12 +306,13 @@ def create_choose_file_button(container, state):
     return button_choose_file
 
 
-def openCamera():
+def openCamera(state):
     openWebcam()
-    isCameraOpened = True
-    
+    state.newImageFilePath = os.path.join(os.path.dirname(__file__), "my-face.png")
+    state.recognizeMostSimilar()
 
-def create_open_camera_button(container):
+
+def create_open_camera_button(container, state):
     dir_open_camera_inactive = os.path.join(
         os.path.dirname(os.path.dirname(__file__)),
         os.path.join("assets", "button_open_camera_inactive.png"),
@@ -289,7 +333,9 @@ def create_open_camera_button(container):
         button_open_camera.image = open_camera_inactive
 
     # Masukkin openCamera as command di button ini
-    button_open_camera = ttk.Button(container, image=open_camera_inactive,command=openWebcam)
+    button_open_camera = ttk.Button(
+        container, image=open_camera_inactive, command=lambda: openCamera(state)
+    )
     button_open_camera.image = open_camera_inactive
 
     button_open_camera.bind("<Enter>", on_enter)
@@ -303,7 +349,7 @@ def create_open_camera_button(container):
 # def countExecutionTime():
 
 
-def create_info_frame(container):
+def create_info_frame(container, state):
 
     frame = ttk.Frame(container)
 
@@ -346,7 +392,7 @@ def create_info_frame(container):
     orDivider.image = img_or_divider
 
     # Open Camera Button
-    open_camera_button = create_open_camera_button(frame)
+    open_camera_button = create_open_camera_button(frame, state)
     open_camera_button.grid(columnspan=2, row=5, sticky="W")
 
     # Result
@@ -358,8 +404,9 @@ def create_info_frame(container):
     resultName02.grid(column=0, row=8, columnspan=2, sticky="W")
 
     # Execution Time
-    executionTime = ttk.Label(frame, text="Execution time: 01:00")
+    executionTime = ttk.Label(frame, text="Execution time: 00:00")
     executionTime.grid(column=0, row=9, columnspan=2, sticky="W", pady=(24, 0))
+    state.timerLabel = executionTime
 
     # Error message
     errorMsg = ttk.Label(frame, text="Error Message", style="Error.TLabel")
@@ -383,6 +430,7 @@ def create_main_window(state: programState):
     )
     root.iconbitmap(dirLogo)
     root.protocol("WM_DELETE_WINDOW", lambda: quit_root(root))
+    state.tkRoot = root
 
     # background
     dir_background = os.path.join(
@@ -426,7 +474,7 @@ def create_main_window(state: programState):
     result_image_frame.grid(column=1, row=2, sticky="N", padx=50)
 
     # info
-    info_frame = create_info_frame(mainFrame)
+    info_frame = create_info_frame(mainFrame, state)
     info_frame.grid(column=2, row=2)
 
     # style
