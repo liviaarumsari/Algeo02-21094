@@ -36,6 +36,8 @@ class programState:
         self.similarityLabel = None
         self.eucDist = 0
         self.eucDistLabel = None
+        # ========== THRESHOLD ==============
+        self.THRESHOLD = 6000
 
         self.errorMsgLabel = None
 
@@ -91,50 +93,59 @@ class programState:
                 self.eigenFaces,
             )
 
-            imgTest = ImageTk.PhotoImage(
-                Image.open(self.newImageFilePath).resize(
-                    (360, 360), Image.Resampling.LANCZOS
+            if self.eucDist <= self.THRESHOLD:
+                imgTest = ImageTk.PhotoImage(
+                    Image.open(self.newImageFilePath).resize(
+                        (360, 360), Image.Resampling.LANCZOS
+                    )
                 )
-            )
-            self.testImageLabel.configure(image=imgTest)
-            self.testImageLabel.image = imgTest
+                self.testImageLabel.configure(image=imgTest)
+                self.testImageLabel.image = imgTest
 
-            img0 = ImageTk.PhotoImage(
-                Image.open(self.sortedTraningImagePaths[0]).resize(
-                    (360, 360), Image.Resampling.LANCZOS
+                img0 = ImageTk.PhotoImage(
+                    Image.open(self.sortedTraningImagePaths[0]).resize(
+                        (360, 360), Image.Resampling.LANCZOS
+                    )
                 )
-            )
-            self.resultImageLabel0.configure(image=img0)
-            self.resultImageLabel0.image = img0
+                self.resultImageLabel0.configure(image=img0)
+                self.resultImageLabel0.image = img0
 
-            img1 = ImageTk.PhotoImage(
-                Image.open(self.sortedTraningImagePaths[1]).resize(
-                    (120, 120), Image.Resampling.LANCZOS
+                img1 = ImageTk.PhotoImage(
+                    Image.open(self.sortedTraningImagePaths[1]).resize(
+                        (120, 120), Image.Resampling.LANCZOS
+                    )
                 )
-            )
-            self.resultImageLabel1.configure(image=img1)
-            self.resultImageLabel1.image = img1
+                self.resultImageLabel1.configure(image=img1)
+                self.resultImageLabel1.image = img1
 
-            img2 = ImageTk.PhotoImage(
-                Image.open(self.sortedTraningImagePaths[2]).resize(
-                    (120, 120), Image.Resampling.LANCZOS
+                img2 = ImageTk.PhotoImage(
+                    Image.open(self.sortedTraningImagePaths[2]).resize(
+                        (120, 120), Image.Resampling.LANCZOS
+                    )
                 )
-            )
-            self.resultImageLabel2.configure(image=img2)
-            self.resultImageLabel2.image = img2
+                self.resultImageLabel2.configure(image=img2)
+                self.resultImageLabel2.image = img2
 
-            img3 = ImageTk.PhotoImage(
-                Image.open(self.sortedTraningImagePaths[3]).resize(
-                    (120, 120), Image.Resampling.LANCZOS
+                img3 = ImageTk.PhotoImage(
+                    Image.open(self.sortedTraningImagePaths[3]).resize(
+                        (120, 120), Image.Resampling.LANCZOS
+                    )
                 )
-            )
-            self.resultImageLabel3.configure(image=img3)
-            self.resultImageLabel3.image = img3
+                self.resultImageLabel3.configure(image=img3)
+                self.resultImageLabel3.image = img3
 
-            self.similarityLabel.configure(
-                text=f"Similarity: {self.similarity * 100:.2f}%"
-            )
-            self.eucDistLabel.configure(text=f"Euclidean Distance: {self.eucDist:.2f}")
+                self.similarityLabel.configure(
+                    text=f"Similarity: {self.similarity * 100:.2f}%"
+                )
+                self.eucDistLabel.configure(
+                    text=f"Euclidean Distance: {self.eucDist:.2f}"
+                )
+            else:
+                self.errorMsgLabel.configure(text="Face not found in training images")
+                self.newImageFilePath = ""
+                self.sortedTraningImagePaths = 0
+                self.similarity = 0
+                self.eucDist = 0
         else:
             print("please choose folder")
 
