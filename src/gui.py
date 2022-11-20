@@ -7,7 +7,7 @@ from PIL import ImageTk, Image
 import os
 import training, recognition
 from webcam import *
-import threading
+import threading, utils
 
 
 class programState:
@@ -20,6 +20,7 @@ class programState:
         self.mostSimilarFacesPaths = []
         self.traningImagePaths = []
         self.sortedTraningImagePaths = []
+        self.programInteractable = True
 
         self.testImageLabel = None
         self.resultImageLabel0 = None
@@ -36,28 +37,34 @@ class programState:
         self.eucDist = 0
         self.eucDistLabel = None
 
-    def trainImages(self):
-        if self.trainingFolderPath != "":
-            (
-                self.eigenFaces,
-                self.trainingImageMean,
-                self.trainingImageMatrices,
-            ) = training.trainFromFolder(self.trainingFolderPath)
+        self.errorMsgLabel = None
 
-            self.traningImagePaths = []
-            for filename in os.listdir(self.trainingFolderPath):
-                f = os.path.join(self.trainingFolderPath, filename)
-                if os.path.isfile(f):
-                    self.traningImagePaths.append(f)
-        else:
-            print("please choose folder")
+        self.folderNameLabel = None
+        self.fileNameLabel = None
+
+    def trainImages(self):
+        state.errorMsgLabel.configure(text="Program is running")
+        self.programInteractable = False
+        (
+            self.eigenFaces,
+            self.trainingImageMean,
+            self.trainingImageMatrices,
+        ) = training.trainFromFolder(self.trainingFolderPath)
+        self.programInteractable = True
+        self.errorMsgLabel.configure(text="")
+
+        self.traningImagePaths = []
+        for filename in os.listdir(self.trainingFolderPath):
+            f = os.path.join(self.trainingFolderPath, filename)
+            if os.path.isfile(f):
+                self.traningImagePaths.append(f)
 
     def runExecTimer(self):
-        ss = self.execTime % 60
-        mm = self.execTime // 60
-        self.timerLabel.configure(text=f"Execution time: {mm:02d}:{ss:02d}")
-        self.execTime += 1
         if self.eigenFaces == None:
+            ss = self.execTime % 60
+            mm = self.execTime // 60
+            self.timerLabel.configure(text=f"Execution time: {mm:02d}:{ss:02d}")
+            self.execTime += 1
             self.tkRoot.after(1000, self.runExecTimer)
 
     def startTraining(self):
@@ -66,6 +73,7 @@ class programState:
         self.runExecTimer()
 
         thread = threading.Thread(target=self.trainImages)
+
         thread.start()
 
     def recognizeMostSimilar(self):
@@ -129,6 +137,63 @@ class programState:
             self.eucDistLabel.configure(text=f"Euclidean Distance: {self.eucDist:.2f}")
         else:
             print("please choose folder")
+
+    def resetImages(self):
+        # File dan folder dari test image
+        file = "no_image01.png"
+        folder = "assets"
+        # Open dan show image
+        imagepath = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), os.path.join(folder, file)
+        )
+
+        imgTest = ImageTk.PhotoImage(
+            Image.open(imagepath).resize((360, 360), Image.Resampling.LANCZOS)
+        )
+        self.testImageLabel.configure(image=imgTest)
+        self.testImageLabel.image = imgTest
+
+        img0 = ImageTk.PhotoImage(
+            Image.open(imagepath).resize((360, 360), Image.Resampling.LANCZOS)
+        )
+        self.resultImageLabel0.configure(image=img0)
+        self.resultImageLabel0.image = img0
+
+        file = "no_image02.png"
+        folder = "assets"
+        # Open dan show image
+        imagepath = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), os.path.join(folder, file)
+        )
+
+        img1 = ImageTk.PhotoImage(
+            Image.open(imagepath).resize((120, 120), Image.Resampling.LANCZOS)
+        )
+        self.resultImageLabel1.configure(image=img1)
+        self.resultImageLabel1.image = img1
+
+        img2 = ImageTk.PhotoImage(
+            Image.open(imagepath).resize((120, 120), Image.Resampling.LANCZOS)
+        )
+        self.resultImageLabel2.configure(image=img2)
+        self.resultImageLabel2.image = img2
+
+        img3 = ImageTk.PhotoImage(
+            Image.open(imagepath).resize((120, 120), Image.Resampling.LANCZOS)
+        )
+        self.resultImageLabel3.configure(image=img3)
+        self.resultImageLabel3.image = img3
+
+    def resetResults(self):
+        self.similarityLabel.configure(text="Similarity: ")
+        self.eucDistLabel.configure(text="Euclidean Distance: ")
+
+    def resetInfoFrame(self):
+        self.errorMsgLabel.configure(text="")
+        self.folderNameLabel.configure(text="No folder chosen")
+        self.fileNameLabel.configure(text="No file chosen")
+        self.timerLabel.configure(text="Execution time: 00:00")
+        self.resetResults()
 
 
 isCameraOpened = False
@@ -239,11 +304,27 @@ def create_result_image_frame(container, state):
 
 
 def chooseTrainingFolder(state: programState):
-    root = Tk()
-    root.directory = fd.askdirectory()
-    root.withdraw()
-    state.trainingFolderPath = root.directory
-    state.startTraining()
+    if state.programInteractable:
+        root = Tk()
+        root.directory = fd.askdirectory()
+        root.withdraw()
+
+        if root.directory == "":
+            return
+
+        state.newImageFilePath = ""
+        state.trainingFolderPath = ""
+        state.execTime = 0
+        state.resetInfoFrame()
+        state.resetImages()
+
+        if utils.trainingFolderValid(root.directory):
+            state.trainingFolderPath = root.directory
+            state.folderNameLabel.configure(text=os.path.basename(root.directory))
+            state.errorMsgLabel.configure(text="")
+            state.startTraining()
+        else:
+            state.errorMsgLabel.configure(text="Folder must only contain images")
 
 
 def create_choose_folder_button(container, state):
@@ -282,10 +363,35 @@ def create_choose_folder_button(container, state):
 
 
 def chooseImageFile(state: programState):
-    root = Tk()
-    state.newImageFilePath = fd.askopenfilename()
-    root.withdraw()
-    state.recognizeMostSimilar()
+    if state.trainingFolderPath == "":
+        state.errorMsgLabel.configure(text="Choose dataset first")
+        return
+    if state.programInteractable:
+        root = Tk()
+        state.newImageFilePath = fd.askopenfilename(
+            title="Choose a file",
+            filetypes=[
+                ("image files", ".png"),
+                ("image files", ".jpg"),
+                ("image files", ".jpeg"),
+            ],
+        )
+        root.withdraw()
+
+        if state.newImageFilePath == "":
+            return
+
+        state.fileNameLabel.configure(text="No file chosen")
+        state.resetImages()
+        state.resetResults()
+
+        if utils.isImageFile(state.newImageFilePath):
+            state.errorMsgLabel.configure(text="")
+            state.fileNameLabel.configure(text=os.path.basename(state.newImageFilePath))
+            state.recognizeMostSimilar()
+        else:
+            state.newImageFilePath = ""
+            state.errorMsgLabel.configure(text="Image file invalid")
 
 
 def create_choose_file_button(container, state):
@@ -320,10 +426,28 @@ def create_choose_file_button(container, state):
     return button_choose_file
 
 
-def openCamera(state):
-    openWebcam()
-    state.newImageFilePath = os.path.join(os.path.dirname(__file__), "my-face.png")
-    state.recognizeMostSimilar()
+def openCamera(state: programState):
+    if state.trainingFolderPath == "":
+        state.errorMsgLabel.configure(text="Choose dataset first")
+        return
+    if state.programInteractable:
+        result_path = os.path.join(os.path.dirname(__file__), "my-face.png")
+
+        if os.path.exists(result_path):
+            os.remove(result_path)
+
+        state.programInteractable = False
+        openWebcam()
+        state.programInteractable = True
+
+        state.errorMsgLabel.configure(text="")
+        state.newImageFilePath = ""
+
+        if os.path.exists(result_path):
+            state.newImageFilePath = result_path
+            state.recognizeMostSimilar()
+        else:
+            state.errorMsgLabel.configure(text="Webcam was not able to find face")
 
 
 def create_open_camera_button(container, state):
@@ -358,11 +482,6 @@ def create_open_camera_button(container, state):
     return button_open_camera
 
 
-# def resultName():
-
-# def countExecutionTime():
-
-
 def create_info_frame(container, state: programState):
 
     frame = ttk.Frame(container)
@@ -380,8 +499,9 @@ def create_info_frame(container, state: programState):
     choose_folder_button = create_choose_folder_button(frame, state)
     choose_folder_button.grid(column=0, row=1)
     # Folder Name Chosen
-    folderName = ttk.Label(frame, text="No file chosen")
+    folderName = ttk.Label(frame, text="No folder chosen")
     folderName.grid(column=1, row=1)
+    state.folderNameLabel = folderName
 
     # Insert Test Image
     insertTestImage = ttk.Label(
@@ -394,6 +514,7 @@ def create_info_frame(container, state: programState):
     # File Name Chosen
     fileName = ttk.Label(frame, text="No file chosen")
     fileName.grid(column=1, row=3)
+    state.fileNameLabel = fileName
 
     # or divider
     dir_or = os.path.join(
@@ -425,8 +546,9 @@ def create_info_frame(container, state: programState):
     state.timerLabel = executionTime
 
     # Error message
-    errorMsg = ttk.Label(frame, text="Error Message", style="Error.TLabel")
+    errorMsg = ttk.Label(frame, text="", style="Error.TLabel")
     errorMsg.grid(column=0, row=10, columnspan=2, sticky="W", pady=(24, 0))
+    state.errorMsgLabel = errorMsg
 
     return frame
 

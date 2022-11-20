@@ -96,26 +96,28 @@ def getEigenVector(matrixCovariant):
         else:
             eigenVector = np.dot(eigenVector, q)
         matrixCovariant = np.dot(r, q)
-    
-    eigenValue = matrixCovariant.diagonal()
-    return eigenVector,eigenValue
 
-def selectEigenVector(eigenValue) :
+    eigenValue = matrixCovariant.diagonal()
+    return eigenVector, eigenValue
+
+
+def selectEigenVector(eigenValue):
     sum = 0
     length = len(eigenValue)
     i = 0
-    while(sum < 0.95 * np.sum(eigenValue) and i < length):
+    while sum < 0.95 * np.sum(eigenValue) and i < length:
         sum += eigenValue[i]
-        i+=1
+        i += 1
     return i
+
 
 # Variable names based on GeeksForGeeks tutorial
 # Returns list of vectors (in a (NxN,1) matrix)
 def calculateEigenfaces(
-    A_matrix: np.matrix, eigenVectors: np.ndarray, length : int
+    A_matrix: np.matrix, eigenVectors: np.ndarray, length: int
 ) -> list[np.matrix]:
     eigenfaces = []
-    for i in range (length):
+    for i in range(length):
         vi_mat = np.reshape(eigenVectors[i], (len(A_matrix[0]), 1))
         eigenfaces.append(np.matmul(A_matrix, vi_mat))
 
@@ -129,12 +131,11 @@ def trainFromFolder(path):
 
     augmentedMatrixOfImages = concatMatrix(normalizedMatrices)
     covariantL = matrixCovariant(augmentedMatrixOfImages)
-    eigenVectors ,eigenValues = getEigenVector(covariantL)
+    eigenVectors, eigenValues = getEigenVector(covariantL)
     eigenVectorLength = selectEigenVector(eigenValues)
-    print("finished training")
 
     return (
-        calculateEigenfaces(augmentedMatrixOfImages, eigenVectors,eigenVectorLength),
+        calculateEigenfaces(augmentedMatrixOfImages, eigenVectors, eigenVectorLength),
         mean,
         imageMatrices,
     )
