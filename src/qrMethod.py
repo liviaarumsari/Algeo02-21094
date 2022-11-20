@@ -86,7 +86,6 @@ def searchEigenVector(eigenValues,matrix):
     for i in range (len(eigenValues)) : 
         print(identity)
         tempMatrix = eigenValues[i] * identity - matrix
-        print(tempMatrix)
         tempMatrix = Matrix (tempMatrix)
         basisVektor = tempMatrix.nullspace()
         if not basisVektor:
@@ -95,13 +94,6 @@ def searchEigenVector(eigenValues,matrix):
             arr = basisVektor
         else:
             arr = np.append(arr,basisVektor,axis = 1)
-        print(arr)
-
-v,w  = np.linalg.eig(temp)
-print("==== Eigen Values bawaan linear =====")
-print(v)
-print("===== Eigen vector bawaan liner ====")
-print(w)
 
 matrix = copyMatrix(temp)
 
@@ -113,8 +105,3 @@ for i in range(500):
     else:
         basisVector = np.dot(basisVector,q)
 eigenValues = matrix.diagonal()
-print("=== Eigen Values Manual ====")
-print(basisVector)
-print(" ====== Eigen Vector Manual ======")
-print(eigenValues)
-
