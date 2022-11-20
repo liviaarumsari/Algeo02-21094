@@ -1,6 +1,5 @@
 import numpy as np
-import os
-import cv2
+import math
 
 # Generate vector of coefficients (omega in GFG)
 # Reference: https://www.youtube.com/watch?v=61NuFlK5VdU
@@ -20,7 +19,11 @@ def vectorOfCoefficients(
 def calculateEuclideanDist(coefsNew: np.matrix, coefsTrain: np.matrix) -> float:
     diff = coefsNew - coefsTrain
     diff = diff.flatten()
-    return sum(pow(coef, 2) for coef in diff)
+
+    # dist = 0
+    # for coef in diff:
+
+    return math.sqrt(sum(pow(coef, 2) for coef in diff))
 
 
 # Return path sorted by most similar
@@ -45,4 +48,10 @@ def getSimilarImagesPathSorted(
 
     distListSorted = sorted(distList, key=lambda x: x[0])
 
-    return [distTuple[1] for distTuple in distListSorted]
+    similarity = 1 - (distListSorted[0][0] / distListSorted[-1][0])
+
+    return (
+        [distTuple[1] for distTuple in distListSorted],
+        similarity,
+        distListSorted[0][0],
+    )

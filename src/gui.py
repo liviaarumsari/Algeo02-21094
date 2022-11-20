@@ -31,6 +31,11 @@ class programState:
         self.timerLabel = None
         self.tkRoot = None
 
+        self.similarity = 0
+        self.similarityLabel = None
+        self.eucDist = 0
+        self.eucDistLabel = None
+
     def trainImages(self):
         if self.trainingFolderPath != "":
             (
@@ -66,7 +71,11 @@ class programState:
     def recognizeMostSimilar(self):
         if self.trainingFolderPath != "" or self.newImageFilePath != "":
             unkownImageVector = training.normalizeImage(self.newImageFilePath)
-            self.sortedTraningImagePaths = recognition.getSimilarImagesPathSorted(
+            (
+                self.sortedTraningImagePaths,
+                self.similarity,
+                self.eucDist,
+            ) = recognition.getSimilarImagesPathSorted(
                 unkownImageVector,
                 self.trainingImageMean,
                 self.trainingImageMatrices,
@@ -113,6 +122,11 @@ class programState:
             )
             self.resultImageLabel3.configure(image=img3)
             self.resultImageLabel3.image = img3
+
+            self.similarityLabel.configure(
+                text=f"Similarity: {self.similarity * 100:.2f}%"
+            )
+            self.eucDistLabel.configure(text=f"Euclidean Distance: {self.eucDist:.2f}")
         else:
             print("please choose folder")
 
@@ -349,7 +363,7 @@ def create_open_camera_button(container, state):
 # def countExecutionTime():
 
 
-def create_info_frame(container, state):
+def create_info_frame(container, state: programState):
 
     frame = ttk.Frame(container)
 
@@ -398,10 +412,12 @@ def create_info_frame(container, state):
     # Result
     result = ttk.Label(frame, text="Result", style="Subheading.TLabel")
     result.grid(column=0, row=6, columnspan=2, sticky="W", pady=(24, 0))
-    resultName01 = ttk.Label(frame, text="None")
-    resultName01.grid(column=0, row=7, columnspan=2, sticky="W")
-    resultName02 = ttk.Label(frame, text="None")
-    resultName02.grid(column=0, row=8, columnspan=2, sticky="W")
+    resultSimilarty = ttk.Label(frame, text="Similarity: ")
+    resultSimilarty.grid(column=0, row=7, columnspan=2, sticky="W")
+    resultDistance = ttk.Label(frame, text="Euclidean Distance: ")
+    resultDistance.grid(column=0, row=8, columnspan=2, sticky="W")
+    state.similarityLabel = resultSimilarty
+    state.eucDistLabel = resultDistance
 
     # Execution Time
     executionTime = ttk.Label(frame, text="Execution time: 00:00")
