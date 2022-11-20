@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy.linalg as LA
 import os
 from qrMethod import *
-import recognition
 
 
 def normalizeImage(path):
