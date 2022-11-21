@@ -52,7 +52,7 @@ def getSimilarImagesPathSorted(
 
     distListSorted = sorted(distList, key=lambda x: x[0])
 
-    similarity = 1 - (distListSorted[0][0] / similarityThreshold)
+    similarity = 1 - (distListSorted[0][0] / (0.5 * distListSorted[-1][0]))
 
     return (
         [distTuple[1] for distTuple in distListSorted],

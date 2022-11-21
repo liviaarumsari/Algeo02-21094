@@ -38,8 +38,8 @@ class programState:
         self.eucDistLabel = None
         self.projDist = 0
         # ========== THRESHOLD ==============
-        self.projThreshold = 200
-        self.similarityThreshold = 6000
+        self.projThreshold = 1000
+        self.similarityThreshold = 115
 
         self.errorMsgLabel = None
 
@@ -96,6 +96,8 @@ class programState:
                 self.eigenFaces,
                 self.similarityThreshold,
             )
+            print(self.projDist)
+            print(self.eucDist)
 
             if (
                 self.eucDist <= self.similarityThreshold
@@ -547,7 +549,7 @@ def create_info_frame(container, state: programState):
     choose_folder_button.grid(column=0, row=1)
     # Folder Name Chosen
     folderName = ttk.Label(frame, text="No folder chosen")
-    folderName.grid(column=1, row=1)
+    folderName.grid(column=1, row=1, sticky="W")
     state.folderNameLabel = folderName
 
     # Insert Test Image
@@ -560,7 +562,7 @@ def create_info_frame(container, state: programState):
     choose_file_button.grid(column=0, row=3, sticky="W")
     # File Name Chosen
     fileName = ttk.Label(frame, text="No file chosen")
-    fileName.grid(column=1, row=3)
+    fileName.grid(column=1, row=3, sticky="W")
     state.fileNameLabel = fileName
 
     # or divider
