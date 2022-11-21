@@ -36,8 +36,10 @@ class programState:
         self.similarityLabel = None
         self.eucDist = 0
         self.eucDistLabel = None
+        self.projDist = 0
         # ========== THRESHOLD ==============
-        self.THRESHOLD = 6000
+        self.projThreshold = 200
+        self.similarityThreshold = 6000
 
         self.errorMsgLabel = None
 
@@ -83,6 +85,7 @@ class programState:
             unkownImageVector = training.normalizeImage(self.newImageFilePath)
             (
                 self.sortedTraningImagePaths,
+                self.projDist,
                 self.similarity,
                 self.eucDist,
             ) = recognition.getSimilarImagesPathSorted(
@@ -91,9 +94,13 @@ class programState:
                 self.trainingImageMatrices,
                 self.traningImagePaths,
                 self.eigenFaces,
+                self.similarityThreshold,
             )
 
-            if self.eucDist <= self.THRESHOLD:
+            if (
+                self.eucDist <= self.similarityThreshold
+                and self.projDist <= self.projThreshold
+            ):
                 imgTest = ImageTk.PhotoImage(
                     Image.open(self.newImageFilePath).resize(
                         (360, 360), Image.Resampling.LANCZOS
@@ -140,12 +147,41 @@ class programState:
                 self.eucDistLabel.configure(
                     text=f"Euclidean Distance: {self.eucDist:.2f}"
                 )
-            else:
-                self.errorMsgLabel.configure(text="Face not found in training images")
-                self.newImageFilePath = ""
-                self.sortedTraningImagePaths = 0
+            elif self.projDist > self.projThreshold:
+                imgTest = ImageTk.PhotoImage(
+                    Image.open(self.newImageFilePath).resize(
+                        (360, 360), Image.Resampling.LANCZOS
+                    )
+                )
+                self.testImageLabel.configure(image=imgTest)
+                self.testImageLabel.image = imgTest
+
+                self.errorMsgLabel.configure(text="Image not recognized as a face")
+
+                self.sortedTraningImagePaths = []
                 self.similarity = 0
                 self.eucDist = 0
+                self.projDist = 0
+
+                self.resetResults()
+            else:
+                imgTest = ImageTk.PhotoImage(
+                    Image.open(self.newImageFilePath).resize(
+                        (360, 360), Image.Resampling.LANCZOS
+                    )
+                )
+                self.testImageLabel.configure(image=imgTest)
+                self.testImageLabel.image = imgTest
+
+                self.errorMsgLabel.configure(text="Face not found in training images")
+
+                self.sortedTraningImagePaths = []
+                self.similarity = 0
+                self.eucDist = 0
+                self.projDist = 0
+
+                self.resetResults()
+
         else:
             print("please choose folder")
 

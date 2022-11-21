@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import numpy.linalg as LA
-import os
+import os, math
 from qrMethod import *
 
 
@@ -118,7 +118,9 @@ def calculateEigenfaces(
     eigenfaces = []
     for i in range(length):
         vi_mat = np.reshape(eigenVectors[i], (len(A_matrix[0]), 1))
-        eigenfaces.append(np.matmul(A_matrix, vi_mat))
+        eigenface = np.matmul(A_matrix, vi_mat)
+        norm = math.sqrt(sum(pow(el, 2) for el in eigenface))
+        eigenfaces.append(eigenface / norm)
 
     return eigenfaces
 
@@ -139,6 +141,19 @@ def trainFromFolder(path):
         imageMatrices,
     )
 
+
+# imageMatrices = extractMatrices(r"D:\ITB Files\Linear-Alg\Algeo02-21094\test")
+# mean = meanOfMatrices(imageMatrices)
+# normalizedMatrices = differenceList(imageMatrices, mean)
+
+# augmentedMatrixOfImages = concatMatrix(normalizedMatrices)
+# covariantL = matrixCovariant(augmentedMatrixOfImages)
+# eigenVectors, eigenValues = getEigenVector(covariantL)
+# eigenVectorLength = selectEigenVector(eigenValues)
+
+# eigenfaces = calculateEigenfaces(
+#     augmentedMatrixOfImages, eigenVectors, eigenVectorLength
+# )
 
 # # TES FUNGSI
 # ret = extractMatrices("test")
