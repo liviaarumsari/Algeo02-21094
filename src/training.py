@@ -88,7 +88,7 @@ def matrixCovariant(matrixConcat):
 
 
 def getEigenVector(matrixCovariant):
-    for i in range(256):
+    for i in range(60):
         q, r = getQr(matrixCovariant)
         if i == 0:
             eigenVector = q
