@@ -38,7 +38,7 @@ class programState:
         self.eucDistLabel = None
         self.projDist = 0
         # ========== THRESHOLD ==============
-        self.projThreshold = 1000
+        self.projThreshold = 0
         self.similarityThreshold = 115
 
         self.errorMsgLabel = None
