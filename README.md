@@ -13,6 +13,14 @@ Recognice is a face recognition application that use Eigen Value to search for t
 
 Within recognice you can add your own folder dataset as training images. While the test image can be chosen from your file or taken from webcam. Recognice performs the best with a lot of images per identities. It is better to have your dataset already aligned and crop to their face.
 
+## Team Members
+
+| **NIM**  |       **Nama**        |
+| :------: | :-------------------: |
+| 13521094 | Angela Livia Arumsari |
+| 13521134 |     Rinaldy Adin      |
+| 13521139 |   Nathania Callista   |
+
 ## How to Run
 
 1. Install fonts needed for application by opening and installing font from `FutuBk.ttf` and `FutuMd.ttf`
