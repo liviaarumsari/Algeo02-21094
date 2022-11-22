@@ -1,7 +1,5 @@
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
-import numpy.linalg as LA
 import os, math
 from qrMethod import *
 
