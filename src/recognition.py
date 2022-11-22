@@ -49,7 +49,7 @@ def getSimilarImagesPathSorted(
     newImageProj = calculateFaceSpaceProj(eigenfaces, newImageWeight)
 
     distList = []
-    for idx in range(len(eigenfaces)):
+    for idx in range(trainingImages.shape[0]):
         # Calculate distance between unknown image and the-idx'th training image
         trainingImageVector = np.reshape(trainingImages[idx, :, 0], (65536, 1))
         trainingImageWeight = calculateWeigths(eigenfaces, trainingImageVector - mean)
