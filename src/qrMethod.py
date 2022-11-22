@@ -96,7 +96,6 @@ def getQr(matrix):
 def searchEigenVector(eigenValues, matrix):
     n = len(matrix)
     identity = np.identity(n)
-    print(eigenValues)
     for i in range(len(eigenValues)):
         print(identity)
         tempMatrix = eigenValues[i] * identity - matrix

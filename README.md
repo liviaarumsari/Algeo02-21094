@@ -1,13 +1,16 @@
 # Tugas Besar 2 IF 2123 Algeo - Eigenfaces for Face Recognition
+
 Recognice is a face recognition application that use Eigen Value to search for the most similar face. You can watch our live demo [_here_](https://www.example.com).
 
 ## Table of Contents
-* [General Info](#general-information)
-* [How to Run](#technologies-used)
-* [Screenshots](#screenshots)
-* [Program Structure](#program-structure)
+
+-   [General Info](#general-information)
+-   [How to Run](#technologies-used)
+-   [Screenshots](#screenshots)
+-   [Program Structure](#program-structure)
 
 ## General Information
+
 Within recognice you can add your own folder dataset as training images. While the test image can be chosen from your file or taken from webcam. Recognice performs the best with a lot of images per identities. It is better to have your dataset already aligned and crop to their face.
 
 ## How to Run
@@ -27,6 +30,7 @@ $ python main.py
 ```
 
 ## Screenshots
+
 ![Example screenshot](./img/screenshot.png)
 
 ## Program Structure
@@ -55,20 +59,13 @@ $ python main.py
 │       or_divider.png
 │
 └───src
-    │   gui.py
-    │   my-face.png
-    │   qrMethod.py
-    │   recognition.py
-    │   requirements.txt
-    │   training.py
-    │   utils.py
-    │   webcam.py
-    │   __init__.py
-    │
-    └───__pycache__
-            qrMethod.cpython-310.pyc
-            recognition.cpython-310.pyc
-            training.cpython-310.pyc
-            utils.cpython-310.pyc
-            webcam.cpython-310.pyc
+        gui.py
+        my-face.png
+        qrMethod.py
+        recognition.py
+        requirements.txt
+        training.py
+        utils.py
+        webcam.py
+        __init__.py
 ```

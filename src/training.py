@@ -38,12 +38,6 @@ def extractMatrices(directory):
     idx = 0
     for filename in os.listdir(directory):
         path = os.path.join(directory, filename)
-        # Test matrix hasil
-        # temp = normalizeImage(path)
-        # print(temp)
-        # print(len(temp), "x", len(temp[0]))
-        # tempMat = normalizeImage(path)
-        # result.append(tempMat)
         result[idx] = normalizeImage(path)
         idx += 1
 

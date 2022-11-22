@@ -26,6 +26,16 @@ def calculateEuclideanDist(A: np.matrix, B: np.matrix) -> float:
     return math.sqrt(sum(pow(coef, 2) for coef in diff))
 
 
+def consineSimilarity(A: np.matrix, B: np.matrix) -> float:
+    A = A.flatten()
+    B = B.flatten()
+    dotProduct = np.dot(A, B)
+    ANorm = math.sqrt(sum(pow(el, 2) for el in A))
+    BNorm = math.sqrt(sum(pow(el, 2) for el in B))
+
+    return dotProduct / (ANorm * BNorm)
+
+
 # Return path sorted by most similar
 def getSimilarImagesPathSorted(
     unkownImageVector: np.matrix,
@@ -33,7 +43,6 @@ def getSimilarImagesPathSorted(
     trainingImages: np.ndarray,
     trainingImagesPaths: list[str],
     eigenfaces: list[np.matrix],
-    similarityThreshold: int,
 ) -> list[np.matrix]:
     # Calculate coefficient matrix (Omega) of unknown image
     newImageWeight = calculateWeigths(eigenfaces, unkownImageVector - mean)
@@ -43,20 +52,22 @@ def getSimilarImagesPathSorted(
     for idx in range(len(eigenfaces)):
         # Calculate distance between unknown image and the-idx'th training image
         trainingImageVector = np.reshape(trainingImages[idx, :, 0], (65536, 1))
-        dist = calculateEuclideanDist(
-            newImageWeight, calculateWeigths(eigenfaces, trainingImageVector - mean)
-        )
-        distList.append((dist, trainingImagesPaths[idx]))
+        trainingImageWeight = calculateWeigths(eigenfaces, trainingImageVector - mean)
+        dist = calculateEuclideanDist(newImageWeight, trainingImageWeight)
+        distList.append((dist, trainingImagesPaths[idx], trainingImageWeight))
 
     distListSorted = sorted(distList, key=lambda x: x[0])
 
-    similarity = 1 - (distListSorted[0][0] / (0.5 * distListSorted[-1][0]))
+    cosSim = consineSimilarity(newImageWeight, distListSorted[0][2])
 
-    print(distListSorted[-1][0])
+    similarity = (cosSim + 1) / 2
+
+    similarityThreshold = 0.5 * distListSorted[-1][0]
 
     return (
         [distTuple[1] for distTuple in distListSorted],
         calculateEuclideanDist(unkownImageVector - mean, newImageProj),
         similarity,
+        similarityThreshold,
         distListSorted[0][0],
     )

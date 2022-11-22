@@ -87,6 +87,7 @@ class programState:
                 self.sortedTraningImagePaths,
                 self.projDist,
                 self.similarity,
+                self.similarityThreshold,
                 self.eucDist,
             ) = recognition.getSimilarImagesPathSorted(
                 unkownImageVector,
@@ -94,12 +95,11 @@ class programState:
                 self.trainingImageMatrices,
                 self.traningImagePaths,
                 self.eigenFaces,
-                self.similarityThreshold,
             )
 
             self.projThreshold = (
                 len(self.sortedTraningImagePaths) * 4
-                + (len(self.sortedTraningImagePaths) * 100) * 100
+                + (len(self.sortedTraningImagePaths) // 50) * 100
             )
 
             if (
