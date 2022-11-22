@@ -57,16 +57,9 @@ $ python main.py
 │   │   __init__.py
 │   │
 │   └───__pycache__
-│           qrMethod.cpython-310.pyc
-│           recognition.cpython-310.pyc
-│           training.cpython-310.pyc
-│           utils.cpython-310.pyc
-│           webcam.cpython-310.pyc
-│
-└───test
-        Adriana Lima0_0.jpg
-        Adriana Lima101_3.jpg
-        Adriana Lima102_4.jpg
-        Adriana Lima103_5.jpg
-        Adriana Lima104_6.jpg
+            qrMethod.cpython-310.pyc
+            recognition.cpython-310.pyc
+            training.cpython-310.pyc
+            utils.cpython-310.pyc
+            webcam.cpython-310.pyc
 ```
