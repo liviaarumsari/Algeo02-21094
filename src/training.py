@@ -108,8 +108,6 @@ def selectEigenVector(eigenValue):
     return i
 
 
-# Variable names based on GeeksForGeeks tutorial
-# Returns list of vectors (in a (NxN,1) matrix)
 def calculateEigenfaces(
     A_matrix: np.matrix, eigenVectors: np.ndarray, length: int
 ) -> list[np.matrix]:
