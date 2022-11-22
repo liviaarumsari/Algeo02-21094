@@ -1,6 +1,6 @@
 # Tugas Besar 2 IF 2123 Algeo - Eigenfaces for Face Recognition
 
-Recognice is a face recognition application that use Eigen Value to search for the most similar face. You can watch our live demo [_here_](https://www.example.com).
+Recognice is a face recognition application that use Eigen Value to search for the most similar face. You can watch our live demo [_here_](https://www.youtube.com/watch?v=JrZH4j8tW3A).
 
 ## Table of Contents
 
@@ -39,7 +39,10 @@ $ python main.py
 
 ## Screenshots
 
-![Example screenshot](./img/screenshot.png)
+![App Interface](./assets.screenshot01.png)
+![Error when the input is not an image](./assets.screenshot02.png)
+![Error when there is no matching face](./assets.screenshot03.png)
+![Succesful recognition](./assets.screenshot04.png)
 
 ## Program Structure
 
