@@ -1,31 +1,39 @@
-# Tugas Besar 2 IF 2123 Aljabar Linear Dan Geometri
+# Tugas Besar 2 IF 2123 Algeo - Eigenfaces for Face Recognition
+Recognice is a face recognition application that use Eigen Value to search for the most similar face. You can watch our live demo [_here_](https://www.example.com).
 
-# Aplikasi Nilai Eigen dan EigenFace pada Pengenalan Wajah (Face Recognition)
+## Table of Contents
+* [General Info](#general-information)
+* [How to Run](#technologies-used)
+* [Screenshots](#screenshots)
+* [Program Structure](#program-structure)
 
-## Penjelasan Singkat Program
+## General Information
+Within recognice you can add your own folder dataset as training images. While the test image can be chosen from your file or taken from webcam. Recognice performs the best with a lot of images per identities. It is better to have your dataset already aligned and crop to their face.
 
-## Cara Menjalankan program
+## How to Run
 
-1. Install font yang diperlukan dengan membuka dan menginstall font pada file `FutuBk.ttf` dan `FutuMd.ttf`
+1. Install fonts needed for application by opening and installing font from `FutuBk.ttf` and `FutuMd.ttf`
 
-2. Install dependencies yang diperlukan dengan menjalankan command berikut pada
+2. Install dependencies needed by running this command in root folder
 
 ```
 $ pip install -r requirements.txt
 ```
 
-3. Jalankan `main.py` dengan command berikut
+3. Run `main.py` by using this command
 
 ```
 $ python main.py
 ```
 
-## Struktur Program
+## Screenshots
+![Example screenshot](./img/screenshot.png)
+
+## Program Structure
 
 ```
 .
 │   .gitignore
-│   apple.jpg
 │   FutuBk.ttf
 │   FutuMd.ttf
 │   main.py
