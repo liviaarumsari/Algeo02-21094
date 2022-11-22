@@ -25,6 +25,7 @@ $ python main.py
 ```
 .
 │   .gitignore
+│   apple.jpg
 │   FutuBk.ttf
 │   FutuMd.ttf
 │   main.py
@@ -45,18 +46,18 @@ $ python main.py
 │       no_image02.png
 │       or_divider.png
 │
-├───src
-│   │   gui.py
-│   │   my-face.png
-│   │   qrMethod.py
-│   │   recognition.py
-│   │   requirements.txt
-│   │   training.py
-│   │   utils.py
-│   │   webcam.py
-│   │   __init__.py
-│   │
-│   └───__pycache__
+└───src
+    │   gui.py
+    │   my-face.png
+    │   qrMethod.py
+    │   recognition.py
+    │   requirements.txt
+    │   training.py
+    │   utils.py
+    │   webcam.py
+    │   __init__.py
+    │
+    └───__pycache__
             qrMethod.cpython-310.pyc
             recognition.cpython-310.pyc
             training.cpython-310.pyc
