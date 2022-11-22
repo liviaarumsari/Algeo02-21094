@@ -39,10 +39,10 @@ $ python main.py
 
 ## Screenshots
 
-![App Interface](./assets.screenshot01.png)
-![Error when the input is not an image](./assets.screenshot02.png)
-![Error when there is no matching face](./assets.screenshot03.png)
-![Succesful recognition](./assets.screenshot04.png)
+![App Interface](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot01.png?raw=true)
+![Error when the input is not an image](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot02.png?raw=true)
+![Error when there is no matching face](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot03.png?raw=true)
+![Succesful recognition](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot04.png?raw=true)
 
 ## Program Structure
 
