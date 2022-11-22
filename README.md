@@ -5,7 +5,9 @@ Recognice is a face recognition application that use Eigen Value to search for t
 ## Table of Contents
 
 -   [General Info](#general-information)
--   [How to Run](#technologies-used)
+-   [Team Members](#team-members)
+-   [Technologies Used](#technologies-used)
+-   [How to Run](#how-to-run)
 -   [Screenshots](#screenshots)
 -   [Program Structure](#program-structure)
 
@@ -20,6 +22,13 @@ Within recognice you can add your own folder dataset as training images. While t
 | 13521094 | Angela Livia Arumsari |
 | 13521134 |     Rinaldy Adin      |
 | 13521139 |   Nathania Callista   |
+
+## Technologies Used
+1. Python Imaging Library (Pillow)
+2. OpenCV
+3. Numpy
+4. Sympy
+5. Tkinter for GUI
 
 ## How to Run
 
