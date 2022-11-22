@@ -47,7 +47,7 @@ class programState:
         self.fileNameLabel = None
 
     def trainImages(self):
-        state.errorMsgLabel.configure(text="Program is running")
+        self.errorMsgLabel.configure(text="Program is running")
         self.programInteractable = False
         (
             self.eigenFaces,
@@ -96,8 +96,11 @@ class programState:
                 self.eigenFaces,
                 self.similarityThreshold,
             )
-            print(self.projDist)
-            print(self.eucDist)
+
+            self.projThreshold = (
+                len(self.sortedTraningImagePaths) * 4
+                + (len(self.sortedTraningImagePaths) * 100) * 100
+            )
 
             if (
                 self.eucDist <= self.similarityThreshold
@@ -685,6 +688,6 @@ def create_main_window(state: programState):
         root.mainloop()
 
 
-if __name__ == "__main__":
+def initGUI():
     state = programState()
     create_main_window(state)
