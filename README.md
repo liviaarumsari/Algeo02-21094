@@ -39,10 +39,10 @@ $ python main.py
 
 ## Screenshots
 
-![App Interface](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot01.png)
-![Error when the input is not an image](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot02.png)
-![Error when there is no matching face](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot03.png)
-![Succesful recognition](https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot04.png)
+<img src="https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot01.png" width="752" />
+<img src="https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot02.png" width="752" />
+<img src="https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot03.png" width="752" />
+<img src="https://github.com/liviaarumsari/Algeo02-21094/blob/main/assets/screenshot04.png" width="752" />
 
 ## Program Structure
 
