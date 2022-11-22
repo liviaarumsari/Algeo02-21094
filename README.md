@@ -25,7 +25,6 @@ $ python main.py
 ```
 .
 │   .gitignore
-│   apple.jpg
 │   FutuBk.ttf
 │   FutuMd.ttf
 │   main.py
