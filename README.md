@@ -1,10 +1,10 @@
 # Tugas Besar 2 IF 2123 Aljabar Linear Dan Geometri
 
-## Aplikasi Nilai Eigen dan EigenFace pada Pengenalan Wajah (Face Recognition)
+# Aplikasi Nilai Eigen dan EigenFace pada Pengenalan Wajah (Face Recognition)
 
-### Penjelasan Singkat Program
+## Penjelasan Singkat Program
 
-### Cara Menjalankan program
+## Cara Menjalankan program
 
 1. Install font yang diperlukan dengan membuka dan menginstall font pada file `FutuBk.ttf` dan `FutuMd.ttf`
 
@@ -20,7 +20,7 @@ $ pip install -r requirements.txt
 $ python main.py
 ```
 
-### Struktur Program
+## Struktur Program
 
 ```
 .
