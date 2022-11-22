@@ -9,10 +9,6 @@ def normalizeImage(path):
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
 
     resized = cv2.resize(img_gray, (256, 256), interpolation=cv2.INTER_AREA)
-    # Cek hasil image yang diresize
-    # cv2.imshow("test image", resized)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
     norm = np.zeros_like(resized.astype(float))
     minPx, maxPx = resized.min(), resized.max()
@@ -32,18 +28,11 @@ def extractMatrices(directory):
         if os.path.isfile(f):
             len += 1
 
-    # result = np.empty((len, 256, 256))
     result = np.empty((len, 256 * 256, 1))
 
     idx = 0
     for filename in os.listdir(directory):
         path = os.path.join(directory, filename)
-        # Test matrix hasil
-        # temp = normalizeImage(path)
-        # print(temp)
-        # print(len(temp), "x", len(temp[0]))
-        # tempMat = normalizeImage(path)
-        # result.append(tempMat)
         result[idx] = normalizeImage(path)
         idx += 1
 
