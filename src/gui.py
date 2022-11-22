@@ -96,11 +96,13 @@ class programState:
                 self.traningImagePaths,
                 self.eigenFaces,
             )
-
+            print(self.projDist)
             self.projThreshold = (
                 len(self.sortedTraningImagePaths) * 4
-                + (len(self.sortedTraningImagePaths) // 50) * 100
+                + (len(self.sortedTraningImagePaths) // 100) * 100
             )
+            print(len(self.sortedTraningImagePaths))
+            print(self.projThreshold)
 
             if (
                 self.eucDist <= self.similarityThreshold
