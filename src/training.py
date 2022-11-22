@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import os, math
-from qrMethod import *
+from .qrMethod import *
 
 
 def normalizeImage(path):
