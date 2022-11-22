@@ -5,9 +5,9 @@ from tkinter import filedialog as fd
 from tkinter.ttk import *
 from PIL import ImageTk, Image
 import os
-import training, recognition
-from webcam import *
-import threading, utils
+from .webcam import *
+import threading
+from . import utils, training, recognition
 
 
 class programState:
