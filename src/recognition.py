@@ -19,8 +19,6 @@ def calculateFaceSpaceProj(eigenfaces: list[np.matrix], weights: np.matrix):
 
 
 # Calculate euclidean distance
-# (no need to get square root as we're only
-# trying to find the minimum anyway)
 def calculateEuclideanDist(A: np.matrix, B: np.matrix) -> float:
     diff = A - B
     diff = diff.flatten()
